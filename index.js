@@ -1,12 +1,29 @@
-const Discord = require("discord.js");
-const client = new Discord.Client();
+const dotenv = require("dotenv");
+dotenv.config();
 
-client.login(
-  "017d1d66fd9329d53c315820b61936c9aeb40ed7890034620e683a01f65736af"
-);
+let isCommand = (message) => {
+  return message.content.charAt(0) == process.env.COMMAND_SYMBOL;
+};
 
-client.on("message", (message) => {
-  if (message.content === "ping") {
+const { Client, GatewayIntentBits } = require("discord.js");
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
+
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+  // console.log(process.env.API_KEY);
+});
+
+client.on("messageCreate", (message) => {
+  if (!isCommand(message)) return false;
+  if (message.content === "µping") {
     message.reply("pong");
   }
 });
+
+client.login(`${process.env.API_KEY}`);
