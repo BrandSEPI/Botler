@@ -38,18 +38,22 @@ const client = new Client({
 
 // CONNECTION
 client.on("ready", () => {
-  client.channels.cache
-    .get(json.channelId)
-    .messages.fetch(json.messageId)
-    .then((response) => {
-      mainMessage = response;
-    });
-  console.log(`Logged in as ${client.user.tag}`);
-  if (json.channelId == "")
+  try {
+    client.channels.cache
+      .get(json.channelId)
+      .messages.fetch(json.messageId)
+      .then((response) => {
+        mainMessage = response;
+      });
+  } catch (error) {
+    console.log(error);
     console.log("init the bot with the µinit in the channel\n");
+  }
+  console.log(`Logged in as ${client.user.tag}`);
 });
+//www.youtube.com/watch?v=rydXmBRwghQ
 
-client.on("messageCreate", (message) => {
+https: client.on("messageCreate", (message) => {
   if (!isCommand(message)) return false;
   if (message.content === "µping") {
     message.reply(`pong : ${client.ws.ping}`);
