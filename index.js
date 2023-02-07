@@ -2,15 +2,13 @@ const dotenv = require("dotenv");
 dotenv.config();
 const playerMessage = require("./components/playerMessage");
 const fs = require("fs");
-const ytdl = require("ytdl-core");
 let json = require("./data.json");
-const { Client, GatewayIntentBits } = require("discord.js");
+const { Client, GatewayIntentBits, Events } = require("discord.js");
 const discordVoice = require("@discordjs/voice");
-const player = discordVoice.createAudioPlayer();
+// const player = discordVoice.createAudioPlayer();
+const { Player } = require("discord-music-player");
+const { throws } = require("assert");
 
-player.on(discordVoice.AudioPlayerStatus.Playing, () => {
-  console.log("The audio player has started playing!");
-});
 // const resource = discordVoice.createAudioResource("./LA_FVE_LA_FOUDRE.mp3", {
 //   metadata: {
 //     artist: "La Fève",
@@ -19,8 +17,6 @@ player.on(discordVoice.AudioPlayerStatus.Playing, () => {
 // });
 
 let mainMessage;
-
-let lastPing = 0;
 
 dotenv.config();
 let isCommand = (message) => {
@@ -35,8 +31,14 @@ const client = new Client({
     GatewayIntentBits.GuildVoiceStates,
   ],
 });
-
+const player = new Player(client, {
+  leaveOnEmpty: false,
+});
+player.on(discordVoice.AudioPlayerStatus.Playing, () => {
+  console.log("The audio player has started playing!");
+});
 // CONNECTION
+client.player = player;
 client.on("ready", () => {
   try {
     client.channels.cache
@@ -51,21 +53,26 @@ client.on("ready", () => {
   }
   console.log(`Logged in as ${client.user.tag}`);
 });
-//www.youtube.com/watch?v=rydXmBRwghQ
 
-https: client.on("messageCreate", (message) => {
-  if (!isCommand(message)) return false;
-  if (message.content === "µping") {
+client.on("messageCreate", async (message) => {
+  const args = message.content
+    .slice(process.env.PREFIX.length)
+    .trim()
+    .split(/ +/g);
+  const command = args.shift();
+  let guildQueue = client.player.getQueue(message.guild.id);
+
+  if (command === "ping") {
     message.reply(`pong : ${client.ws.ping}`);
   }
-  if (message.content === "µinit") {
+  if (command === "init") {
     try {
       let newData = { channelId: message.channelId };
       fs.writeFile("data.json", JSON.stringify(newData), function (err) {
         if (err) throw err;
         console.log("complete");
       });
-      message.channel.send(playerMessage(lastPing)).then((responseMessage) => {
+      message.channel.send(playerMessage()).then((responseMessage) => {
         let newData = json;
         newData = {
           channelId: message.channelId,
@@ -83,27 +90,32 @@ https: client.on("messageCreate", (message) => {
       console.log(error);
     }
   }
-  if (message.content.indexOf("µplay") >= 0) {
+  if (command === "skip") {
     try {
-      let content = message.content.slice(6);
-      lastPing = client.ws.ping;
-      mainMessage.edit(playerMessage(lastPing));
-      const connection = discordVoice.joinVoiceChannel({
-        channelId: message.member.voice.channel.id,
-        guildId: message.guildId,
-        adapterCreator: message.guild.voiceAdapterCreator,
+      guildQueue.skip();
+      setTimeout(() => {
+        if (typeof client.player.getQueue(message.guild.id) !== "undefined")
+          updatePlayer(client.player.getQueue(message.guild.id).nowPlaying);
+      }, "1000");
+      message.delete();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  if (command === "nowPlaying") {
+    console.log(`Now playing: ${guildQueue.nowPlaying}`);
+    message.delete();
+  }
+  if (command === "play") {
+    try {
+      let queue = client.player.createQueue(message.guild.id);
+      await queue.join(message.member.voice.channel);
+      let song = await queue.play(args.join(" ")).catch((err) => {
+        console.log(err);
+        if (!guildQueue) queue.stop();
       });
-      connection.subscribe(player);
-      let newData = json;
-      newData.queue.push(content);
-      player.play(
-        discordVoice.createAudioResource(ytdl(content, { filter: "audioonly" }))
-      );
 
-      fs.writeFile("data.json", JSON.stringify(newData), function (err) {
-        if (err) throw err;
-        console.log("queue Updated with " + message.content.slice(6));
-      });
+      updatePlayer(client.player.getQueue(message.guild.id).nowPlaying);
       message.delete();
     } catch (error) {
       console.log(error);
@@ -111,4 +123,35 @@ https: client.on("messageCreate", (message) => {
   }
 });
 
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (!interaction.isButton()) return;
+  if (interaction.customId === "play") {
+    console.log("play");
+  }
+  if (interaction.customId === "pause") {
+    console.log("pause");
+  }
+  if (interaction.customId === "stop") {
+    console.log("stop");
+  }
+  if (interaction.customId === "go") {
+    console.log("go");
+    let queue = client.player.createQueue(interaction.guild.id);
+    await queue.join(interaction.member.voice.channel);
+  }
+});
+
+let updatePlayer = (newMessageQueue) => {
+  try {
+    if (typeof mainMessage == "undefined")
+      throw new Error("the player message is not defined");
+    mainMessage
+      .edit(playerMessage(client.ws.ping, newMessageQueue))
+      .then(() => {
+        console.log("edit");
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
 client.login(`${process.env.API_KEY}`);
