@@ -1,18 +1,26 @@
 const dotenv = require("dotenv");
+dotenv.config();
+const playerMessage = require("./components/playerMessage");
 const fs = require("fs");
+const ytdl = require("ytdl-core");
 let json = require("./data.json");
-const {
-  Client,
-  GatewayIntentBits,
-  ButtonStyle,
-  ActionRowBuilder,
-  ButtonBuilder,
-  EmbedBuilder,
-  AttachmentBuilder,
-} = require("discord.js");
+const { Client, GatewayIntentBits } = require("discord.js");
+const discordVoice = require("@discordjs/voice");
+const player = discordVoice.createAudioPlayer();
 
-const file = new AttachmentBuilder("./piwoPlayer.png");
-let channel;
+player.on(discordVoice.AudioPlayerStatus.Playing, () => {
+  console.log("The audio player has started playing!");
+});
+// const resource = discordVoice.createAudioResource("./LA_FVE_LA_FOUDRE.mp3", {
+//   metadata: {
+//     artist: "La Fève",
+//     title: "La Foudre",
+//   },
+// });
+
+let mainMessage;
+
+let lastPing = 0;
 
 dotenv.config();
 let isCommand = (message) => {
@@ -24,86 +32,78 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildVoiceStates,
   ],
 });
 
-let btnInformation = {
-  play: ["▶", ButtonStyle.Success],
-  pause: ["||", ButtonStyle.Secondary],
-  stop: ["∎", ButtonStyle.Secondary],
-};
-let btn = (btnInformation, index) => {
-  return new ActionRowBuilder().addComponents(
-    new ButtonBuilder()
-      .setCustomId(index)
-      .setLabel(btnInformation[index][0])
-      .setStyle(btnInformation[index][1])
-  );
-};
-
-const player = new EmbedBuilder()
-  .setColor(0x00ff00)
-  .setTitle("BOTLER:PIWO player")
-  .setDescription("Best Discord media player by PiwoGang")
-
-  .setImage("attachment://piwoPlayer.png");
-
+// CONNECTION
 client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  client.channels.cache
+    .get(json.channelId)
+    .messages.fetch(json.messageId)
+    .then((response) => {
+      mainMessage = response;
+    });
+  console.log(`Logged in as ${client.user.tag}`);
   if (json.channelId == "")
     console.log("init the bot with the µinit in the channel\n");
-  else {
-    channel = client.channels.cache.find(
-      (channel) => channel.id === json.channelId
-    );
-    channel.messages.fetch().then((message) => {
-      console.log(message.delete());
-      // if(messageconten)
-      //   message
-      //     .delete()
-      //     .then((msg) =>
-      //       console.log(`Deleted message from ${msg.author.username}`)
-      //     )
-      //     .catch(console.error);
-    });
-
-    channel.send({
-      embeds: [player],
-      components: [
-        btn(btnInformation, "play"),
-        btn(btnInformation, "pause"),
-        btn(btnInformation, "stop"),
-      ],
-      files: [file],
-      inline: true,
-    });
-  }
 });
 
 client.on("messageCreate", (message) => {
   if (!isCommand(message)) return false;
   if (message.content === "µping") {
-    message.reply("pong");
+    message.reply(`pong : ${client.ws.ping}`);
   }
   if (message.content === "µinit") {
-    let newData = { channelId: message.channelId };
-    fs.writeFile("data.json", JSON.stringify(newData), function (err) {
-      if (err) throw err;
-      console.log("complete");
-    });
-    message.reply("channelId Saved");
+    try {
+      let newData = { channelId: message.channelId };
+      fs.writeFile("data.json", JSON.stringify(newData), function (err) {
+        if (err) throw err;
+        console.log("complete");
+      });
+      message.channel.send(playerMessage(lastPing)).then((responseMessage) => {
+        let newData = json;
+        newData = {
+          channelId: message.channelId,
+          messageId: responseMessage.id,
+          queue: [],
+        };
+
+        fs.writeFile("data.json", JSON.stringify(newData), function (err) {
+          if (err) throw err;
+          console.log("message_id is set");
+        });
+        message.delete();
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
   if (message.content.indexOf("µplay") >= 0) {
-    console.log("test");
-    console.log(message.content.slice(5, -1));
-    // message.content.slice()
-    // json.push()
-    // let newData = { channelId: message.channelId };
-    // fs.writeFile("data.json", JSON.stringify(newData), function (err) {
-    //   if (err) throw err;
-    //   console.log("complete");
-    // });
-    // message.reply("channelId Saved");
+    try {
+      let content = message.content.slice(6);
+      lastPing = client.ws.ping;
+      mainMessage.edit(playerMessage(lastPing));
+      const connection = discordVoice.joinVoiceChannel({
+        channelId: message.member.voice.channel.id,
+        guildId: message.guildId,
+        adapterCreator: message.guild.voiceAdapterCreator,
+      });
+      connection.subscribe(player);
+      let newData = json;
+      newData.queue.push(content);
+      player.play(
+        discordVoice.createAudioResource(ytdl(content, { filter: "audioonly" }))
+      );
+
+      fs.writeFile("data.json", JSON.stringify(newData), function (err) {
+        if (err) throw err;
+        console.log("queue Updated with " + message.content.slice(6));
+      });
+      message.delete();
+    } catch (error) {
+      console.log(error);
+    }
   }
 });
 
