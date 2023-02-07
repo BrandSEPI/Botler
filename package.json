@@ -18,6 +18,9 @@
   "homepage": "https://github.com/BrandSEPI/PIWOBOT#readme",
   "dependencies": {
     "discord.js": "^14.7.1",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongodb": "^5.0.0",
+    "mongoose": "^6.9.0"
   }
 }
