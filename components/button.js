@@ -1,17 +1,19 @@
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
+const { info } = require("console");
+const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
 
-let btnInformation = {
-  play: ["▶", ButtonStyle.Success],
-  pause: ["||", ButtonStyle.Secondary],
-  stop: ["∎", ButtonStyle.Secondary],
-  go: ["Come to the channel", ButtonStyle.Secondary],
+let ButtonCreator = (information) => {
+  let result = [];
+  for (key in information) {
+    result.push(
+      new ButtonBuilder()
+        .setCustomId(key)
+        .setLabel(information[key][0])
+        .setStyle(information[key][1])
+    );
+  }
+  return result;
 };
 
-module.exports = function btn(index) {
-  return new ActionRowBuilder().addComponents(
-    new ButtonBuilder()
-      .setCustomId(index)
-      .setLabel(btnInformation[index][0])
-      .setStyle(btnInformation[index][1])
-  );
+module.exports = function btn(information) {
+  return new ActionRowBuilder().setComponents(ButtonCreator(information));
 };

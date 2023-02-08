@@ -1,17 +1,22 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ButtonStyle } = require("discord.js");
 const btn = require("./button");
+let number = 0;
+
 let messageStructure = (ping = 0, songData = {}) => {
   return (
     new EmbedBuilder()
       .setColor(0x00ff00)
-      // .setThumbnail(songPicture(songData))
-      .setAuthor({
-        name: "PIWO player",
-      })
-      .setTitle("Current Playing")
+      // .setAuthor({
+      //   name: "PIWO player",
+      // })
+      .setTitle("__Current Playing__")
       .setDescription(songVerifier(songData))
       .setImage(songPicture(songData))
-      .setFooter({ text: `Latency: ${ping} ms` })
+      .setFooter({
+        text: `Remain ${number} song${
+          number > 1 ? "s" : ""
+        }\n\n\nLatency: ${ping} ms`,
+      })
   );
 };
 let songPicture = (songData) => {
@@ -20,12 +25,46 @@ let songPicture = (songData) => {
 };
 let songVerifier = (songData) => {
   if (Object.keys(songData).length < 1) return "No information about this song";
-  else return `${songData.name} by ${songData.author} - [${songData.duration}]`;
+  else
+    return `${songData.name} _by_ ***${songData.author}*** [${songData.duration}]`;
 };
 
-module.exports = function playerMessage(ping = "-", songData = {}) {
+let playerBtn = {
+  play: ["▶", ButtonStyle.Success],
+  pause: ["❚❚", ButtonStyle.Secondary],
+  stop: ["∎", ButtonStyle.Secondary],
+  skip: [">>|", ButtonStyle.Secondary],
+};
+
+let playerToolBtn = {
+  // loop: ["⭮", ButtonStyle.Secondary],
+  // shuffle: ["⤮", ButtonStyle.Secondary],
+  queue: ["Show Queue", ButtonStyle.Secondary],
+};
+
+let queueModule = (moreData) => {
+  let result = "";
+  if (
+    typeof moreData.showQueue == "undefined" ||
+    typeof moreData.songs == "undefined" ||
+    moreData.showQueue == false
+  )
+    return result;
+  result = "__***Queue :***__\n";
+  moreData.songs.forEach((element) => {
+    result += `[${element.duration}] ⟹ ${element.name} - ${element.author}\n`;
+  });
+  return result;
+};
+
+module.exports = function playerMessage(
+  ping = "-",
+  songData = {},
+  moreData = {}
+) {
   return {
     embeds: [messageStructure(ping, songData)],
-    components: [btn("play"), btn("pause"), btn("stop"), btn("go")],
+    components: [btn(playerBtn), btn(playerToolBtn)],
+    content: `${queueModule(moreData)}`,
   };
 };
