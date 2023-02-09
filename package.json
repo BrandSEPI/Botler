@@ -1,16 +1,18 @@
 {
-  "name": "piwobot",
-  "version": "1.0.0",
+  "name": "botler",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "start:dev": "node index.js --watch",
+    "start:debug": "node index.js --debug --watch"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BrandSEPI/PIWOBOT.git"
   },
-  "author": "",
+  "author": "brandsepi",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/BrandSEPI/PIWOBOT/issues"
@@ -25,6 +27,7 @@
     "isomorphic-unfetch": "^4.0.2",
     "libsodium-wrappers": "^0.7.10",
     "mongodb": "^5.0.0",
-    "mongoose": "^6.9.0"
+    "mongoose": "^6.9.0",
+    "winston": "^3.8.2"
   }
 }

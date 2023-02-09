@@ -1,30 +1,35 @@
 const { EmbedBuilder, ButtonStyle } = require("discord.js");
 const btn = require("./button");
-let number = 0;
 
-let messageStructure = (ping = 0, songData = {}) => {
+let messageStructure = (ping = 0, songData = {}, queueLength = 0) => {
   return (
     new EmbedBuilder()
       .setColor(0x00ff00)
       // .setAuthor({
       //   name: "PIWO player",
       // })
-      .setTitle("__Current Playing__")
+      .setTitle(title(songData))
       .setDescription(songVerifier(songData))
       .setImage(songPicture(songData))
       .setFooter({
-        text: `Remain ${number} song${
-          number > 1 ? "s" : ""
-        }\n\n\nLatency: ${ping} ms`,
+        text: `Remain ${queueLength} song${
+          queueLength > 1 ? "s" : ""
+        }\n\nLatency: ${ping} ms`,
       })
   );
+};
+
+let title = (songData) => {
+  if (Object.keys(songData).length < 1) return "__No music__";
+  else return "__Current Playing__";
 };
 let songPicture = (songData) => {
   if (typeof songData.thumbnail != "undefined") return songData.thumbnail;
   else return "https://i.imgur.com/Pgw1Bs5.png";
 };
 let songVerifier = (songData) => {
-  if (Object.keys(songData).length < 1) return "No information about this song";
+  if (Object.keys(songData).length < 1)
+    return "µplay < Your Song > to listen music";
   else
     return `${songData.name} _by_ ***${songData.author}*** [${songData.duration}]`;
 };
@@ -60,10 +65,11 @@ let queueModule = (moreData) => {
 module.exports = function playerMessage(
   ping = "-",
   songData = {},
-  moreData = {}
+  moreData = {},
+  queueLength
 ) {
   return {
-    embeds: [messageStructure(ping, songData)],
+    embeds: [messageStructure(ping, songData, queueLength)],
     components: [btn(playerBtn), btn(playerToolBtn)],
     content: `${queueModule(moreData)}`,
   };
