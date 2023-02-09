@@ -2,7 +2,7 @@
   <img src="https://i.imgur.com/SsOunrB.png" width="200" alt="BOTLER image" />
 </p>
 
-  <p align="center">a <a href="https://discord.com/" target="_blank">discord</a> bot for listening music.</p>
+  <p align="center">The new version of <a href="https://discord.com/" target="_blank">discord</a> bot.</p>
     <p align="center">
 
 <img src="https://img.shields.io/badge/node-v16.19.0-brightgreen" alt="node Version" />
