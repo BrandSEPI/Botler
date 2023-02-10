@@ -153,7 +153,7 @@ client.on("messageCreate", async (message) => {
     // }
     //
     //PLAY COMMAND
-    else if (command === "play") {
+    else if (command === "play" && message.channelId == json.channelId) {
       try {
         logger.info({
           message: `${message.author.username}: send play ${args}`,
@@ -175,7 +175,11 @@ client.on("messageCreate", async (message) => {
       }
     }
     //BAD COMMAND
-    else if (command != "" && message.author.id != client.user.id) {
+    else if (
+      command != "" &&
+      message.author.id != client.user.id &&
+      message.channelId == json.channelId
+    ) {
       try {
         logger.info({
           message: `${message.author.username}: send bad command`,
@@ -200,7 +204,8 @@ client.on("messageCreate", async (message) => {
     //BAD MESSAGE
     else if (
       message.id != json.messageId &&
-      message.author.id != client.user.id
+      message.author.id != client.user.id &&
+      message.channelId == json.channelId
     ) {
       logger.info({
         message: `${message.author.username}: send bad message`,
