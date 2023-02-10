@@ -2,13 +2,14 @@
   <img src="https://i.imgur.com/SsOunrB.png" width="200" alt="BOTLER image" />
 </p>
 
-  <p align="center">a <a href="https://discord.com/" target="_blank">discord</a> bot for listening music.</p>
+  <p align="center">The new version of <a href="https://discord.com/" target="_blank">discord</a> bot.</p>
     <p align="center">
 
 <img src="https://img.shields.io/badge/node-v16.19.0-brightgreen" alt="node Version" />
 <img src="https://img.shields.io/badge/licence-ISC-green" alt="licence ISC" />
 <img src="https://img.shields.io/badge/NPM-8.19.3-blue" alt="NPM Version" />
 <img src="https://img.shields.io/badge/bot-v1.0.1-blueviolet" alt="bot version" />
+<img src="https://img.shields.io/badge/wakatime-21h30-informational" alt="bot version" />
 
 ## Description
 
