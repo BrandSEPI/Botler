@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/BrandSEPI/PIWOBOT#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.8.0",
     "@discordjs/voice": "^0.14.0",
     "discord-music-player": "^9.1.1",
     "discord.js": "^14.7.1",

@@ -84,6 +84,7 @@ client.on("messageCreate", async (message) => {
     const command = args.shift();
     guildQueue = client.player.getQueue(message.guild.id);
 
+    console.log(command);
     //PING COMMAND
     if (command === "ping") {
       try {
