@@ -1,7 +1,6 @@
 // VARIABLES,CONSTANTES AND MODULES IMPORTATION
 const logger = require("./components/logger");
-const dotenv = require("dotenv");
-dotenv.config();
+const dotenv = require("dotenv").config();
 const playerMessage = require("./components/playerMessage");
 const fs = require("fs");
 let json = require("./data.json");
@@ -12,7 +11,6 @@ const {
   ActivityType,
 } = require("discord.js");
 const { Player } = require("discord-music-player");
-const { throws } = require("assert");
 let mainMessage;
 let queue;
 let showQueue = false;
@@ -87,21 +85,7 @@ client.on("messageCreate", async (message) => {
     console.log(command);
     //PING COMMAND
     if (command === "ping") {
-      try {
-        logger.info({
-          message: `${message.author.username}: send Ping`,
-        });
-        message.reply(`pong : ${client.ws.ping} ms`).then((reply) => {
-          setTimeout(() => {
-            message.delete();
-            reply.delete();
-          }, 2000);
-        });
-      } catch (error) {
-        logger.error({
-          message: `${error}`,
-        });
-      }
+      
     }
     //INIT COMMAND
     else if (command === "init") {

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:dev": "node index.js --watch",
+    "start:dev": "node test.js --watch",
     "start:debug": "node index.js --debug --watch"
   },
   "repository": {
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/BrandSEPI/PIWOBOT#readme",
   "dependencies": {
     "@discordjs/opus": "^0.8.0",
+    "@discordjs/rest": "^1.5.0",
     "@discordjs/voice": "^0.14.0",
     "discord-music-player": "^9.1.1",
     "discord.js": "^14.7.1",
