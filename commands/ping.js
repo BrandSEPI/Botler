@@ -2,7 +2,7 @@ const Discord = require("discord.js");
 
 module.exports = {
   name: "ping",
-  description: "affiche la latence entre le bot et le serveur",
+  description: "affiche la latence du bot en ms",
   permission: null,
   dm: true,
   async run(bot, message) {
