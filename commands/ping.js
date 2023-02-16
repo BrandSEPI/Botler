@@ -6,21 +6,10 @@ module.exports = {
   permission: null,
   dm: true,
   async run(bot, message) {
-    
-    // try {
-    //   logger.info({
-    //     message: `${message.author.username}: send Ping`,
-    //   });
     message.reply(`pong : ${bot.ws.ping} ms`).then((reply) => {
       setTimeout(() => {
-        message.delete();
-        reply.delete();
+        message.deleteReply();
       }, 2000);
     });
-    // } catch (error) {
-    //   logger.error({
-    //     message: `${error}`,
-    //   });
-    // }
   },
 };

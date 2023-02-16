@@ -10,5 +10,3 @@ const bot = new Discord.Client({ intents });
 bot.commands = new Discord.Collection();
 bot.login(`${process.env.API_KEY}`);
 loadEvents(bot);
-
-console.log(bot.eventNames());

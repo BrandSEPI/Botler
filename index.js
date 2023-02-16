@@ -85,7 +85,6 @@ client.on("messageCreate", async (message) => {
     console.log(command);
     //PING COMMAND
     if (command === "ping") {
-      
     }
     //INIT COMMAND
     else if (command === "init") {
