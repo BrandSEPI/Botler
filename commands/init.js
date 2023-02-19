@@ -8,27 +8,29 @@ module.exports = {
   description: "initialise le player le channel utilisé par le bot",
   permission: null,
   dm: false,
-  async run(bot, message) {
-    let newData = { channelId: message.channelId };
+  async run(bot, interaction) {
+    let newData = { channelId: interaction.channelId };
     fs.writeFile("data.json", JSON.stringify(newData), function (err) {
       if (err) throw err;
     });
-    message.channel.setTopic(
-      `utilise /play < Your song > pour ajouter une musique a la queue.\nLes bouttons sont utilisables`
+    interaction.channel.setTopic(
+      `utilise /play < musique à jouer > pour ajouter une musique a la queue.\nLes bouttons sont utilisables`
     );
-    message.channel.send(playerMessage()).then((responseMessage) => {
+    interaction.channel.send(playerMessage()).then((responseMessage) => {
       let newData = json;
       newData = {
-        channelId: message.channelId,
+        channelId: interaction.channelId,
         messageId: responseMessage.id,
       };
       mainMessage = responseMessage;
       fs.writeFile("data.json", JSON.stringify(newData), function (err) {
         if (err) throw err;
       });
+    });
+    interaction.reply(`Initialisation...`).then((reply) => {
       setTimeout(() => {
-        message.delete();
-      }, 2000);
+        interaction.deleteReply();
+      }, 100);
     });
   },
 };
