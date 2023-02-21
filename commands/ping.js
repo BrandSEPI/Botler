@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const playerMessage = require("../components/playerMessage");
 
 module.exports = {
   name: "ping",

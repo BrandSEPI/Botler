@@ -9,7 +9,7 @@ module.exports = {
   permission: null,
   dm: false,
   async run(bot, interaction) {
-    let newData = { channelId: interaction.channelId };
+    let newData = { channelId: "", messageId: "" };
     fs.writeFile("data.json", JSON.stringify(newData), function (err) {
       if (err) throw err;
     });

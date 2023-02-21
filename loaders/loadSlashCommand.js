@@ -25,7 +25,7 @@ module.exports = async (bot) => {
         for (let i = 0; i < command.options.length; i++) {
           slashcommand[
             `add${
-              command.options[i].type.slice(0, 1).toLowerCase() +
+              command.options[i].type.slice(0, 1).toUpperCase() +
               command.options[i].type.slice(1, command.options[i].type.length)
             }Option`
           ]((option) =>
@@ -38,7 +38,7 @@ module.exports = async (bot) => {
       }
       commandList.push(slashcommand);
     });
-  console.log(`commmands loaded`);
+  console.log(`commmands loaded : ${commandList.length} `);
   const rest = new REST({ version: "10" }).setToken(bot.token);
   await rest.put(Routes.applicationCommands(bot.user.id), {
     body: commandList,

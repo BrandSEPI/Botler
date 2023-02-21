@@ -1,4 +1,5 @@
 const { EmbedBuilder, ButtonStyle } = require("discord.js");
+
 const btn = require("./button");
 
 let messageStructure = (ping = 0, songData = {}, queueLength = 0) => {
@@ -73,34 +74,4 @@ module.exports = function playerMessage(
     components: [btn(playerBtn), btn(playerToolBtn)],
     content: `${queueModule(moreData)}`,
   };
-};
-
-module.exports = function updatePlayer(queue, moreData = {}) {
-  try {
-    setTimeout(() => {
-      if (typeof mainMessage == "undefined")
-        throw new Error("the player message is not defined");
-      if (queue == "default") {
-        mainMessage.edit(playerMessage("-", {}, {}, 0)).then(() => {});
-      } else {
-        mainMessage
-          .edit(
-            playerMessage(
-              client.ws.ping,
-              queue.nowPlaying,
-              moreData,
-              queue.songs.length
-            )
-          )
-          .then(() => {});
-      }
-    }, "1000");
-    logger.info({
-      message: `updatePlayer function was called`,
-    });
-  } catch (error) {
-    logger.error({
-      message: `${error}`,
-    });
-  }
 };

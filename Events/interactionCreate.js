@@ -9,7 +9,7 @@ module.exports = async (bot, interaction) => {
       });
 
       let command = require(`../commands/${interaction.commandName}`);
-      command.run(bot, interaction, command.option);
+      command.run(bot, interaction, interaction.options);
     }
   } catch (error) {
     logger.error({
