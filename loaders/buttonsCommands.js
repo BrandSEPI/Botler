@@ -6,13 +6,16 @@ const fs = require("fs");
 module.exports = async (bot) => {
   let commandList = [];
 
-  fs.readdirSync("./commands/slashCommands")
+  fs.readdirSync("./buttonsCommands")
     .filter((f) => f.endsWith(".js"))
     .forEach(async (file) => {
-      let command = require(`../commands/slashCommands/${file}`);
+      let command = require(`../buttonsCommands/${file}`);
       if (!command.name || typeof command.name !== "string")
         throw new TypeError(`The file ${file} need a a name property !`);
-      let slashcommand = new Discord.SlashCommandBuilder()
+      //       bot.commands.set(command.name, command);
+      //     });
+      //   bot.commands.forEach(async (command) => {
+      let slashcommand = new Discord.comma
         .setName(command.name)
         .setDescription(command.description)
         .setDMPermission(command.dm)

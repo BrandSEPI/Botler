@@ -1,7 +1,6 @@
-const Discord = require("discord.js");
-const playerMessage = require("../components/playerMessage");
+const playerMessage = require("../../components/playerMessage");
 const fs = require("fs");
-let json = require("../data.json");
+let json = require("../../data.json");
 
 module.exports = {
   name: "init",

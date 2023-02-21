@@ -1,9 +1,9 @@
-const Discord = require("discord.js");
-const updatePlayer = require("../components/playerMessage");
+const updatePlayer = require("../../components/playerMessage");
+const playlist = require("../../functions/playlist");
 
 module.exports = {
-  name: "play",
-  description: "pour jouer et/ou ajouter le son a la queue",
+  name: "test",
+  description: "pour teste",
   permission: null,
   dm: false,
   options: [
@@ -19,14 +19,10 @@ module.exports = {
     let queue = bot.player.createQueue(interaction.guild.id);
     await queue.join(interaction.member.voice.channel);
     await queue.play(song).catch((err) => {
-      interaction.reply(`${err}`).then((reply) => {
-        setTimeout(() => {
-          interaction.deleteReply();
-        }, 15000);
-      });
-
+      playlist(queue, song, interaction);
       if (!bot.player.getQueue(interaction.guild.id)) queue.stop();
     });
+
     updatePlayer(queue);
     interaction.reply(`song added...`).then((reply) => {
       setTimeout(() => {

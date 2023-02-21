@@ -6,9 +6,6 @@ let messageStructure = (ping = 0, songData = {}, queueLength = 0) => {
   return (
     new EmbedBuilder()
       .setColor(0x00ff00)
-      // .setAuthor({
-      //   name: "PIWO player",
-      // })
       .setTitle(title(songData))
       .setDescription(songVerifier(songData))
       .setImage(songPicture(songData))
