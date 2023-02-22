@@ -9,6 +9,7 @@ module.exports = {
   dm: false,
   async run(bot, interaction) {
     let newData = { channelId: "", messageId: "" };
+    interaction.deferReply();
     fs.writeFile("data.json", JSON.stringify(newData), function (err) {
       if (err) throw err;
     });
@@ -26,7 +27,7 @@ module.exports = {
         if (err) throw err;
       });
     });
-    interaction.reply(`Initialisation...`).then((reply) => {
+    interaction.editReply(`Initialisation...`).then((reply) => {
       setTimeout(() => {
         interaction.deleteReply();
       }, 100);

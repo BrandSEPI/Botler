@@ -8,7 +8,6 @@ module.exports = async (bot, interaction) => {
         message: `${interaction.user.username}: ${interaction.commandName}`,
       });
       let command = require(`../../commands/slashCommands/${interaction.commandName}`);
-      console.log(command);
       command.run(bot, interaction, interaction.options);
     } else if (interaction.isButton()) {
       logger.info({

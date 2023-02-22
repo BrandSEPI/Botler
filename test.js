@@ -2,7 +2,8 @@
 const dotenv = require("dotenv").config();
 const Discord = require("discord.js");
 const intents = new Discord.IntentsBitField(3276799);
-const loadEvents = require("./loaders/loadEvents");
+const loadBotEvents = require("./loaders/loadBotEvents");
+const loadPlayerEvents = require("./loaders/loadPlayerEvents");
 const { Player } = require("discord-music-player");
 
 //INITIALISATION BOT
@@ -16,4 +17,5 @@ bot.player = player;
 //LOGIN THE BOT TO INTERNET !
 bot.commands = new Discord.Collection();
 bot.login(`${process.env.API_KEY}`);
-loadEvents(bot);
+loadBotEvents(bot);
+loadPlayerEvents(bot);

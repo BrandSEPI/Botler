@@ -2,19 +2,17 @@ const { EmbedBuilder, ButtonStyle } = require("discord.js");
 
 const btn = require("./button");
 
-let messageStructure = (ping = 0, songData = {}, queueLength = 0) => {
-  return (
-    new EmbedBuilder()
-      .setColor(0x00ff00)
-      .setTitle(title(songData))
-      .setDescription(songVerifier(songData))
-      .setImage(songPicture(songData))
-      .setFooter({
-        text: `Remain ${queueLength} song${
-          queueLength > 1 ? "s" : ""
-        }\n\nLatency: ${ping} ms`,
-      })
-  );
+let messageStructure = (ping = 0, songData = {}, queue) => {
+  return new EmbedBuilder()
+    .setColor(0x00ff00)
+    .setTitle(title(songData))
+    .setDescription(songVerifier(songData))
+    .setImage(songPicture(songData))
+    .setFooter({
+      text: `Remain ${queueLength(queue)} song${
+        queueLength(queue) > 1 ? "s" : ""
+      }\n for a duration of: ${queueDuration(queue)}\n\nLatency: ${ping} ms`,
+    });
 };
 
 let title = (songData) => {
@@ -60,14 +58,42 @@ let queueModule = (moreData) => {
   return result;
 };
 
+let queueLength = (queue) => {
+  if (typeof queue.songs == "undefined") return 0;
+  else {
+    return queue.songs.length;
+  }
+};
+
+let queueDuration = (queue) => {
+  let duration = { hours: 0, minutes: 0, seconds: 0 };
+  if (typeof queue.songs == "undefined") return "";
+  else {
+    queue.songs.map((songs) => {
+      let songDuration = songs.duration.split(":");
+      duration.minutes += Number(songDuration[0]);
+      duration.seconds += Number(songDuration[1]);
+      if (duration.seconds > 60) {
+        duration.minutes += 1;
+        duration.seconds -= 60;
+      }
+      if (duration.minutes > 60) {
+        duration.hours += 1;
+        duration.minutes -= 60;
+      }
+    });
+  }
+  return `${duration.hours}h ${duration.minutes}m ${duration.seconds}s`;
+};
+
 module.exports = function playerMessage(
   ping = "-",
   songData = {},
   moreData = {},
-  queueLength
+  queue
 ) {
   return {
-    embeds: [messageStructure(ping, songData, queueLength)],
+    embeds: [messageStructure(ping, songData, queue)],
     components: [btn(playerBtn), btn(playerToolBtn)],
     content: `${queueModule(moreData)}`,
   };

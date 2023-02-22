@@ -1,6 +1,5 @@
 const fetch = require("isomorphic-unfetch");
-const { getData, getPreview, getTracks, getDetails } =
-  require("spotify-url-info")(fetch);
+const { getTracks } = require("spotify-url-info")(fetch);
 
 module.exports = async function playlist(queue, playlist, interaction) {
   await queue.playlist(playlist).catch((err) => {
@@ -12,11 +11,7 @@ module.exports = async function playlist(queue, playlist, interaction) {
         );
       })
       .catch((err) => {
-        interaction.reply(`${err}`).then(() => {
-          setTimeout(() => {
-            interaction.deleteReply();
-          }, 3000);
-        });
+        interaction.editReply(`${err}`);
       });
   });
 };

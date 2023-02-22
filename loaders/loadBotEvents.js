@@ -6,8 +6,6 @@ module.exports = async (bot) => {
     .forEach(async (file) => {
       let event = require(`../Events/bot/${file}`);
       bot.on(file.split(".js").join(""), event.bind(null, bot));
-      // bot.on(`Events.${file.split(".js").join("")}`, event.bind(null, bot));
       console.log(`Event : ${file} loaded`);
     });
-  console.log(bot._events);
 };
