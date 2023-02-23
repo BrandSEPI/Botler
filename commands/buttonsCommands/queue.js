@@ -28,9 +28,9 @@ module.exports = {
           messageContent += result;
         } else {
           moreSongs++;
-          messageContent += `and ${moreSongs} more songs...`;
         }
       });
+      messageContent += `and ${moreSongs} more songs...`;
       channel
         .send({ ephemeral: true, embeds: [messageStructure(messageContent)] })
         .then((msg) => {

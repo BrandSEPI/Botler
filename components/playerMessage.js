@@ -11,7 +11,11 @@ let messageStructure = (ping = 0, songData = {}, queue) => {
     .setFooter({
       text: `Remain ${queueLength(queue)} song${
         queueLength(queue) > 1 ? "s" : ""
-      }\n for a duration of: ${queueDuration(queue)}\n\nLatency: ${ping} ms`,
+      }${
+        queueLength(queue) >= 1
+          ? `\n for a duration of: ${queueDuration(queue)}`
+          : ""
+      }\n\nLatency: ${ping} ms`,
     });
 };
 
@@ -25,7 +29,7 @@ let songPicture = (songData) => {
 };
 let songVerifier = (songData) => {
   if (Object.keys(songData).length < 1)
-    return "µplay < Your Song > to listen music";
+    return "/play < Your Song > to listen music";
   else
     return `${songData.name} _by_ ***${songData.author}*** [${songData.duration}]`;
 };
@@ -41,21 +45,6 @@ let playerToolBtn = {
   // loop: ["⭮", ButtonStyle.Secondary],
   // shuffle: ["⤮", ButtonStyle.Secondary],
   queue: ["Show Queue", ButtonStyle.Secondary],
-};
-
-let queueModule = (moreData) => {
-  let result = "";
-  if (
-    typeof moreData.showQueue == "undefined" ||
-    typeof moreData.songs == "undefined" ||
-    moreData.showQueue == false
-  )
-    return result;
-  result = "__***Queue :***__\n";
-  moreData.songs.forEach((element) => {
-    result += `[${element.duration}] ⟹ ${element.name} - ${element.author}\n`;
-  });
-  return result;
 };
 
 let queueLength = (queue) => {
@@ -90,15 +79,9 @@ let queueDuration = (queue) => {
   }
 };
 
-module.exports = function playerMessage(
-  ping = "-",
-  songData = {},
-  moreData = {},
-  queue
-) {
+module.exports = function playerMessage(ping = "-", songData = {}, queue) {
   return {
     embeds: [messageStructure(ping, songData, queue)],
     components: [btn(playerBtn), btn(playerToolBtn)],
-    content: `${queueModule(moreData)}`,
   };
 };

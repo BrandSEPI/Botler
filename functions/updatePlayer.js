@@ -2,12 +2,7 @@ const logger = require("../components/logger");
 const playerMessage = require("../components/playerMessage");
 let json = require("../data.json");
 
-module.exports = function updatePlayer(
-  bot,
-  interaction,
-  status = "default",
-  moreData = {}
-) {
+module.exports = function updatePlayer(bot, interaction, status = "default") {
   try {
     bot.channels.cache
       .get(json.channelId)
@@ -18,17 +13,10 @@ module.exports = function updatePlayer(
         if (typeof mainMessage == "undefined")
           throw new Error("the player message is not defined");
         if (status == "default") {
-          mainMessage.edit(playerMessage("-", {}, {}, 0)).then(() => {});
+          mainMessage.edit(playerMessage("-", {}, 0)).then(() => {});
         } else {
           mainMessage
-            .edit(
-              playerMessage(
-                bot.ws.ping,
-                queue.nowPlaying,
-                moreData,
-                queue
-              )
-            )
+            .edit(playerMessage(bot.ws.ping, queue.nowPlaying, queue))
             .then(() => {});
         }
         logger.info({
