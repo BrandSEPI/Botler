@@ -1,7 +1,11 @@
 module.exports = {
   name: "play",
   async run(bot, interaction) {
-    let queue = bot.player.getQueue(interaction.guild.id);
-    queue.setPaused(false);
+    try {
+      let queue = bot.player.getQueue(interaction.guild.id);
+      queue.setPaused(false);
+    } catch (error) {
+      console.log(error);
+    }
   },
 };
