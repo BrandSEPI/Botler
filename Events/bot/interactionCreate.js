@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const logger = require("../../components/logger");
+const json = require("../../data.json");
 
 module.exports = async (bot, interaction) => {
   try {
@@ -16,6 +17,17 @@ module.exports = async (bot, interaction) => {
       let command = require(`../../commands/buttonsCommands/${interaction.customId}`);
       command.run(bot, interaction);
       interaction.deferUpdate();
+    } else if (interaction.channelId === json.channelId) {
+      interaction
+        .reply({
+          content: "You can't send message to this Channel",
+          ephemeral: true,
+        })
+        .then((msg) => {
+          setTimeout(() => {
+            msg.deleteReply();
+          }, 2000);
+        });
     }
   } catch (error) {
     logger.error({
