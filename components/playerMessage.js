@@ -59,16 +59,17 @@ let queueModule = (moreData) => {
 };
 
 let queueLength = (queue) => {
-  if (typeof queue.songs == "undefined") return 0;
-  else {
+  try {
     return queue.songs.length;
+  } catch (error) {
+    return 0;
   }
 };
 
 let queueDuration = (queue) => {
-  let duration = { hours: 0, minutes: 0, seconds: 0 };
-  if (typeof queue.songs == "undefined") return "";
-  else {
+  try {
+    let duration = { hours: 0, minutes: 0, seconds: 0 };
+
     queue.songs.map((songs) => {
       let songDuration = songs.duration.split(":");
       duration.minutes += Number(songDuration[0]);
@@ -82,8 +83,11 @@ let queueDuration = (queue) => {
         duration.minutes -= 60;
       }
     });
+
+    return `${duration.hours}h ${duration.minutes}m ${duration.seconds}s`;
+  } catch (error) {
+    return "";
   }
-  return `${duration.hours}h ${duration.minutes}m ${duration.seconds}s`;
 };
 
 module.exports = function playerMessage(
