@@ -17,6 +17,8 @@ module.exports = async (bot, interaction) => {
       let command = require(`../../commands/buttonsCommands/${interaction.customId}`);
       command.run(bot, interaction);
       interaction.deferUpdate();
+    } else if (interaction.isSelectMenu()) {
+      interaction.deferUpdate();
     } else if (interaction.channelId === json.channelId) {
       interaction
         .reply({

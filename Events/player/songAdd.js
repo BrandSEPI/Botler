@@ -6,9 +6,6 @@ module.exports = async (bot, interaction) => {
     setTimeout(() => {
       updatePlayer(bot, interaction, "next");
     }, 5000);
-    logger.info({
-      message: `Player : song added`,
-    });
   } catch (error) {
     logger.error({
       message: `${error}`,

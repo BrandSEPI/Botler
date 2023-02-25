@@ -3,21 +3,14 @@ const logger = require("../../components/logger");
 const json = require("../../data.json");
 
 module.exports = async (bot, interaction) => {
-  console.log(interaction);
   try {
-    if (
-      interaction.channelId === json.channelId &&
-      interaction.author.bot == false
-    ) {
+    if ((interaction.type == 0) & (interaction.channelId == json.channelId)) {
       interaction
-        .reply({
-          content: "You can't send message to this Channel",
-          ephemeral: true,
-        })
+        .reply({ content: "use slash commands", ephemeral: true })
         .then((msg) => {
           setTimeout(() => {
-            msg.delete();
             interaction.delete();
+            msg.delete();
           }, 2000);
         });
     }

@@ -1,6 +1,7 @@
 const { EmbedBuilder, ButtonStyle } = require("discord.js");
 
 const btn = require("./button");
+const queueMessage = require("./queue");
 
 let messageStructure = (ping = 0, songData = {}, queue) => {
   return new EmbedBuilder()
@@ -41,11 +42,10 @@ let playerBtn = {
   skip: [">>|", ButtonStyle.Secondary],
 };
 
-let playerToolBtn = {
-  // loop: ["⭮", ButtonStyle.Secondary],
-  // shuffle: ["⤮", ButtonStyle.Secondary],
-  queue: ["Show Queue", ButtonStyle.Secondary],
-};
+// let playerToolBtn = {
+//   // loop: ["⭮", ButtonStyle.Secondary],
+//   // shuffle: ["⤮", ButtonStyle.Secondary],
+// };
 
 let queueLength = (queue) => {
   try {
@@ -80,8 +80,12 @@ let queueDuration = (queue) => {
 };
 
 module.exports = function playerMessage(ping = "-", songData = {}, queue) {
-  return {
-    embeds: [messageStructure(ping, songData, queue)],
-    components: [btn(playerBtn), btn(playerToolBtn)],
-  };
+  try {
+    return {
+      embeds: [messageStructure(ping, songData, queue)],
+      components: [btn(playerBtn), queueMessage(queue)],
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };

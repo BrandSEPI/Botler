@@ -19,9 +19,6 @@ module.exports = function updatePlayer(bot, interaction, status = "default") {
             .edit(playerMessage(bot.ws.ping, queue.nowPlaying, queue))
             .then(() => {});
         }
-        logger.info({
-          message: `updatePlayer function was called`,
-        });
       });
   } catch (error) {
     logger.error({
