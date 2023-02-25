@@ -60,4 +60,4 @@ If you get problem to running the app DM me
 
 ## Stay in touch
 
-- Author - [BrandS\_-]
+- Author - BrandSEPI
