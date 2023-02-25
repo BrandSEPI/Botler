@@ -1,11 +1,11 @@
 {
   "name": "botler",
-  "version": "2.0.1",
+  "version": "2.1.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:dev": "node test.js --watch",
+    "start:dev": "node index.js --watch",
     "start:debug": "node index.js --debug --watch"
   },
   "repository": {

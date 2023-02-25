@@ -8,7 +8,7 @@
 <img src="https://img.shields.io/badge/node-v18.14.0-brightgreen" alt="node Version" />
 <img src="https://img.shields.io/badge/licence-ISC-green" alt="licence ISC" />
 <img src="https://img.shields.io/badge/NPM-9.3.1-blue" alt="NPM Version" />
-<img src="https://img.shields.io/badge/bot-v2.0.1-blueviolet" alt="bot version" />
+<img src="https://img.shields.io/badge/bot-v2.1.1-blueviolet" alt="bot version" />
 <img src="https://img.shields.io/badge/wakatime-22h00-informational" alt="bot version" />
 
 ## Description
