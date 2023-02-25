@@ -27,7 +27,6 @@ place your token in the .env file
 
 ```nano
 1   API_KEY=PUT_YOUR_TOKEN_HERE
-2   PREFIX=µ
 ```
 
 ## Running the app
@@ -52,9 +51,7 @@ If you get problem to running the app DM me
 ```
 backend for save the listen stats
 backfeed user in MP
-better player
 loop & shuffle button
-Better commandes
 & More ...
 
 ```
@@ -63,8 +60,4 @@ If you get problem to running the app DM me
 
 ## Stay in touch
 
-- Author - [BrandS\_-#9117](https://discord.com)
-
-## License
-
-The bot is [ISC licensed](LICENSE).
+- Author - [BrandS\_-]
