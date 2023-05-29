@@ -1,6 +1,5 @@
 const Discord = require("discord.js");
 const logger = require("../../components/logger");
-const json = require("../../data.json");
 
 module.exports = async (bot, interaction) => {
   try {
@@ -19,7 +18,7 @@ module.exports = async (bot, interaction) => {
       interaction.deferUpdate();
     } else if (interaction.isSelectMenu()) {
       interaction.deferUpdate();
-    } else if (interaction.channelId === json.channelId) {
+    } else if (interaction.channelId === bot.informations.channelId) {
       interaction
         .reply({
           content: "You can't send message to this Channel",
@@ -32,6 +31,7 @@ module.exports = async (bot, interaction) => {
         });
     }
   } catch (error) {
+    console.log(error);
     logger.error({
       message: `${error}`,
     });

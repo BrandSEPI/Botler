@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "postinstall": "node ./scripts/editFile.js",
     "start": "node index.js",
     "start:dev": "node index.js --watch",
     "start:debug": "node index.js --debug --watch"
@@ -19,10 +20,11 @@
   },
   "homepage": "https://github.com/BrandSEPI/PIWOBOT#readme",
   "dependencies": {
+    "@discord-player/extractor": "^4.2.2",
     "@discordjs/opus": "^0.8.0",
     "@discordjs/rest": "^1.5.0",
     "@discordjs/voice": "^0.14.0",
-    "discord-music-player": "^9.1.1",
+    "discord-player": "^6.3.0",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
@@ -31,10 +33,11 @@
     "mongodb": "^5.0.0",
     "mongoose": "^6.9.0",
     "spotify-url-info": "^3.2.3",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "ytdl-core": "^4.11.4"
   },
-  "engines" : { 
-    "npm" : ">=9.3.0 <10.0.0",
-    "node" : ">=18.0.0 <19.0.0"
+  "engines": {
+    "npm": ">=9.3.0 <10.0.0",
+    "node": ">=18.0.0 <19.0.0"
   }
 }

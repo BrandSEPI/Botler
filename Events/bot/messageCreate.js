@@ -1,10 +1,13 @@
 const Discord = require("discord.js");
 const logger = require("../../components/logger");
-const json = require("../../data.json");
 
 module.exports = async (bot, interaction) => {
   try {
-    if ((interaction.type == 0) & (interaction.channelId == json.channelId)) {
+    if (
+      (bot.informations !== undefined) &
+      (interaction.type == 0) &
+      (interaction.channelId == bot.informations.channelId)
+    ) {
       interaction
         .reply({ content: "use slash commands", ephemeral: true })
         .then((msg) => {

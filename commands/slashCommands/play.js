@@ -15,28 +15,33 @@ module.exports = {
   ],
   async run(bot, interaction, args) {
     let song = args.get("song").value;
-    let queue = bot.player.createQueue(interaction.guild.id);
-    try {
-      await queue.join(interaction.member.voice.channel);
-    } catch (error) {}
+    // let queue = bot.player.play(interaction.guild.id);
+    // try {
+    //   await queue.join(interaction.member.voice.channel);
+    // } catch (error) {}
     interaction.deferReply().then(async () => {
-      await queue
-        .play(song)
-        .catch(() => {
-          playlist(queue, song, interaction);
-          if (!bot.player.getQueue(interaction.guild.id)) queue.stop();
-        })
-        .then(() => {
-          try {
+      try {
+        await bot.player
+          .play(interaction.member.voice.channel, song)
+          // .catch(() => {
+          //   playlist(queue, song, interaction);
+          //   if (!bot.player.getQueue(interaction.guild.id)) queue.stop();
+          // })
+          .then(() => {
             interaction.editReply(`song added...`).then(() => {
               setTimeout(() => {
                 interaction.deleteReply();
               }, 2000);
             });
-          } catch (error) {
-            throw new Error("Interaction reply failed");
-          }
+          });
+      } catch (error) {
+        interaction.editReply(`can't add song : ${error}`).then(() => {
+          setTimeout(() => {
+            interaction.deleteReply();
+          }, 2000);
         });
+        // throw new Error("Interaction reply failed");
+      }
     });
   },
 };

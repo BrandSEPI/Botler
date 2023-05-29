@@ -1,9 +1,10 @@
+const { useQueue, GuildQueuePlayerNode } = require("discord-player");
+
 module.exports = {
   name: "stop",
   async run(bot, interaction) {
     try {
-      let queue = bot.player.getQueue(interaction.guild.id);
-      queue.stop();
+      new GuildQueuePlayerNode(useQueue(interaction.guild.id)).stop(true);
     } catch (error) {
       console.log(error);
     }

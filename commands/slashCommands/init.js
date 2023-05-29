@@ -1,35 +1,48 @@
 const playerMessage = require("../../components/playerMessage");
-const fs = require("fs");
-let json = require("../../data.json");
 
 module.exports = {
   name: "init",
   description: "initialise le player le channel utilisé par le bot",
   permission: null,
   dm: false,
-  async run(bot, interaction) {
-    let newData = { channelId: "", messageId: "" };
-    fs.writeFile("data.json", JSON.stringify(newData), function (err) {
-      if (err) throw err;
-    });
+  options: [
+    {
+      type: "boolean",
+      name: "force",
+      description: "forcer la réinitialisation du player",
+      required: false,
+    },
+  ],
+  async run(bot, interaction, args) {
     interaction.channel.setTopic(
       `utilise /play < musique à jouer > pour ajouter une musique a la queue.\nLes bouttons sont utilisables`
     );
-    interaction.channel.send(playerMessage()).then((responseMessage) => {
-      let newData = json;
-      newData = {
-        channelId: interaction.channelId,
-        messageId: responseMessage.id,
-      };
-      mainMessage = responseMessage;
-      fs.writeFile("data.json", JSON.stringify(newData), function (err) {
-        if (err) throw err;
+    if (args.get("force") !== null && args.get("force").value === true) {
+      bot.informations = undefined;
+    }
+    if (bot.informations === undefined) {
+      interaction.channel.messages.fetch().then((messages) => {
+        interaction.channel.bulkDelete(messages);
       });
-    });
-    interaction.reply(`Initialisation...`).then((reply) => {
       setTimeout(() => {
-        interaction.deleteReply();
-      }, 100);
-    });
+        interaction.channel.send(playerMessage()).then((responseMessage) => {
+          bot.informations = {
+            channelId: interaction.channelId,
+            messageId: responseMessage.id,
+          };
+        });
+      }, 500);
+      interaction.reply(`Initialisation...`).then((reply) => {
+        setTimeout(() => {
+          interaction.deleteReply();
+        }, 100);
+      });
+    } else {
+      interaction.reply("le player est déjà initialisé").then((reply) => {
+        setTimeout(() => {
+          interaction.deleteReply();
+        }, 1000);
+      });
+    }
   },
 };
