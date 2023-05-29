@@ -9,7 +9,7 @@
 <img src="https://img.shields.io/badge/licence-ISC-green" alt="licence ISC" />
 <img src="https://img.shields.io/badge/NPM-9.3.1-blue" alt="NPM Version" />
 <img src="https://img.shields.io/badge/bot-v2.1.1-blueviolet" alt="bot version" />
-<img src="https://img.shields.io/badge/wakatime-22h00-informational" alt="bot version" />
+<img src="https://img.shields.io/badge/wakatime-35h00-informational" alt="bot version" />
 
 ## Description
 
@@ -60,4 +60,4 @@ If you get problem to running the app DM me
 
 ## Stay in touch
 
-- Author - [BrandS\_-]
+- Author - BrandSEPI
