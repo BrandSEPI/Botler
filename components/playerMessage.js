@@ -17,7 +17,7 @@ let messageStructure = (ping = 0, songData = {}, queue) => {
 };
 
 let title = (songData) => {
-  if (Object.keys(songData).length < 1) return "__No music__";
+  if (typeof songData === null) return "__No music__";
   else return "__Current Playing__";
 };
 let songPicture = (songData) => {
@@ -25,10 +25,9 @@ let songPicture = (songData) => {
   else return "https://i.imgur.com/Pgw1Bs5.png";
 };
 let songVerifier = (songData) => {
-  if (Object.keys(songData).length < 1)
-    return "/play < Your Song > to listen music";
-  else
+  if (songData !== null && songData.title !== undefined) {
     return `${songData.title} _by_ ***${songData.author}*** [${songData.duration}]`;
+  } else return "/play < Your Song > to listen music";
 };
 
 let playerBtn = {
@@ -45,7 +44,8 @@ let playerBtn = {
 
 let queueLength = (queue) => {
   try {
-    return queue.length + 1;
+    if (queue !== undefined && queue !== 0) return queue.length + 1;
+    else return 0;
   } catch (error) {
     return 0;
   }

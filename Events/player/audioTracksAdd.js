@@ -5,7 +5,7 @@ module.exports = async (bot, interaction) => {
   try {
     setTimeout(() => {
       updatePlayer(bot, interaction, "next");
-    }, 1000);
+    }, 5000);
   } catch (error) {
     logger.error({
       message: `${error}`,
