@@ -1,5 +1,3 @@
-const playlist = require("../../functions/playlist");
-
 module.exports = {
   name: "play",
   description: "pour jouer et/ou ajouter le son a la queue",
@@ -21,20 +19,16 @@ module.exports = {
     // } catch (error) {}
     interaction.deferReply().then(async () => {
       try {
-        await bot.player
-          .play(interaction.member.voice.channel, song)
-          // .catch(() => {
-          //   playlist(queue, song, interaction);
-          //   if (!bot.player.getQueue(interaction.guild.id)) queue.stop();
-          // })
-          .then(() => {
-            interaction.editReply(`song added...`).then(() => {
-              setTimeout(() => {
-                interaction.deleteReply();
-              }, 2000);
-            });
-          });
+        await bot.player.play(interaction.member.voice.channelId, song);
+        // .then(() => {
+        //   interaction.editReply(`song added...`).then(() => {
+        //     setTimeout(() => {
+        //       interaction.deleteReply();
+        //     }, 2000);
+        //   });
+        // });
       } catch (error) {
+        console.log(error);
         interaction.editReply(`can't add song : ${error}`).then(() => {
           setTimeout(() => {
             interaction.deleteReply();

@@ -1,50 +1,46 @@
-const updatePlayer = require("../../components/playerMessage");
-const playlist = require("../../functions/playlist");
-const playerMessage = require("../../components/playerMessage");
+const fs = require("fs");
 
 module.exports = {
   name: "test",
-  description: "pour tester",
-  permission: null,
-  dm: true,
-  options: [
-    {
-      type: "boolean",
-      name: "force",
-      description: "forcer la réinitialisation du player",
-      required: false,
-    },
-  ],
-  async run(bot, interaction, args) {
-    interaction.channel.setTopic(
-      `utilise /play < musique à jouer > pour ajouter une musique a la queue.\nLes bouttons sont utilisables`
-    );
-    if (args.get("force") !== null && args.get("force").value === true) {
-      bot.informations = undefined;
-    }
-    if (bot.informations === undefined) {
-      interaction.channel.messages.fetch().then((messages) => {
-        interaction.channel.bulkDelete(messages);
-      });
-      setTimeout(() => {
-        interaction.channel.send(playerMessage()).then((responseMessage) => {
-          bot.informations = {
-            channelId: interaction.channelId,
-            messageId: responseMessage.id,
-          };
+  description: "test",
+  async run(bot, interaction) {
+    interaction.deferReply().then(async () => {
+      const WORLD = process.env.PATH_TO_WORLD;
+
+      fs.readdir(`${WORLD}/stats`, (err, files) => {
+        if (err) {
+          console.error("Error reading the directory:", err);
+          return;
+        }
+
+        // Check the files in the directory
+        console.log(files);
+
+        // Find the JSON file
+        const jsonFile = files.find((file) => file.endsWith(".json"));
+        if (!jsonFile) {
+          console.error("No JSON file found in the directory");
+          return;
+        }
+
+        // Read the JSON file
+        fs.readFile(`${WORLD}/stats/${jsonFile}`, "utf8", (err, data) => {
+          if (err) {
+            console.error("Error reading the file:", err);
+            return;
+          }
+
+          try {
+            console.log("files", jsonFile);
+            const jsonData = JSON.parse(data);
+            // Do something with the JSON data
+            console.log("JSON data", jsonData, typeof jsonData);
+          } catch (error) {
+            console.error("Error parsing JSON:", error);
+          }
         });
-      }, 500);
-      interaction.reply(`Initialisation...`).then((reply) => {
-        setTimeout(() => {
-          interaction.deleteReply();
-        }, 100);
       });
-    } else {
-      interaction.reply("le player est déjà initialisé").then((reply) => {
-        setTimeout(() => {
-          interaction.deleteReply();
-        }, 1000);
-      });
-    }
+      console.log("test:", interaction.channelId);
+    });
   },
 };

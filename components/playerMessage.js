@@ -1,4 +1,4 @@
-const { EmbedBuilder, ButtonStyle } = require("discord.js");
+const { EmbedBuilder } = require("discord.js");
 
 const btn = require("./button");
 const queueMessage = require("./queue");
@@ -31,16 +31,12 @@ let songVerifier = (songData) => {
 };
 
 let playerBtn = {
-  play: ["▶", ButtonStyle.Success],
-  pause: ["❚❚", ButtonStyle.Secondary],
-  stop: ["∎", ButtonStyle.Secondary],
-  skip: [">>|", ButtonStyle.Secondary],
+  play: ["▶", true],
+  pause: ["❚❚", false],
+  stop: ["∎", false],
+  skip: [">>|", false],
+  // shuffle: ["⤮", false],
 };
-
-// let playerToolBtn = {
-//   // loop: ["⭮", ButtonStyle.Secondary],
-//   // shuffle: ["⤮", ButtonStyle.Secondary],
-// };
 
 let queueLength = (queue) => {
   try {

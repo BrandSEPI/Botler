@@ -1,5 +1,4 @@
-const { info } = require("console");
-const { ActionRowBuilder, ButtonBuilder } = require("discord.js");
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require("discord.js");
 
 let ButtonCreator = (information) => {
   let result = [];
@@ -8,7 +7,11 @@ let ButtonCreator = (information) => {
       new ButtonBuilder()
         .setCustomId(key)
         .setLabel(information[key][0])
-        .setStyle(information[key][1])
+        .setStyle(
+          information[key][1] === true
+            ? ButtonStyle.Success
+            : ButtonStyle.Secondary
+        )
     );
   }
   return result;

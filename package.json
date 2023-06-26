@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "node ./scripts/editFile.js",
     "start": "node index.js",
     "start:dev": "node index.js --watch",
     "start:debug": "node index.js --debug --watch"
@@ -28,10 +27,12 @@
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "ffmpeg": "^0.0.4",
     "isomorphic-unfetch": "^4.0.2",
     "libsodium-wrappers": "^0.7.10",
     "mongodb": "^5.0.0",
     "mongoose": "^6.9.0",
+    "prism-media": "^1.3.5",
     "spotify-url-info": "^3.2.3",
     "winston": "^3.8.2",
     "ytdl-core": "^4.11.4"

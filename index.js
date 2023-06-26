@@ -14,6 +14,7 @@ async function initializeBot() {
     leaveOnEmpty: true,
     leaveOnStop: true,
   });
+  // "postinstall": "node ./scripts/editFile.js",
 
   bot.player = player;
 
