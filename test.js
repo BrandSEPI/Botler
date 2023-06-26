@@ -1,5 +1,5 @@
 const fs = require("fs");
-const WORLD = "C:/Users/brand/Desktop/server/world";
+const WORLD = "./test";
 
 fs.readdir(`${WORLD}/stats`, async (err, files) => {
   if (err) {
@@ -39,13 +39,12 @@ fs.readdir(`${WORLD}/stats`, async (err, files) => {
       try {
         const jsonData = JSON.parse(data);
 
-        
         // Do something with the JSON data
-        console.log("JSON data", jsonData, typeof jsonData);
+        console.log(jsonData.stats["minecraft:custom"]["minecraft:play_time"]);
+        // console.log("JSON data", jsonData, typeof jsonData);
       } catch (error) {
         console.error("Error parsing JSON:", error);
       }
     });
   });
-
 });
