@@ -5,11 +5,18 @@ const intents = new Discord.IntentsBitField(3276799);
 const loadBotEvents = require("./loaders/loadBotEvents");
 const loadPlayerEvents = require("./loaders/loadPlayerEvents");
 const { Player } = require("discord-player");
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_ACCESS_TOKEN,
+});
 
 // Define an async function to wrap the code
 async function initializeBot() {
   // INITIALISATION BOT
   const bot = new Discord.Client({ intents });
+  bot.openai = new OpenAIApi(configuration);
+
   const player = new Player(bot, {
     leaveOnEmpty: true,
     leaveOnStop: true,

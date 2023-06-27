@@ -3,29 +3,33 @@ const statMessage = require("../../components/statMessage");
 
 const statTable = {
   mort: "minecraft:deaths",
-  "temps de jeu": "minecraft:play_time",
+  time: "minecraft:play_time",
   "dégats données": "minecraft:damage_dealt",
   "dégats reçus": "minecraft:damage_taken",
   "mobs tués": "minecraft:mob_kills",
   mine: "minecraftMined",
   craft: "minecraftCrafted",
-  // sauts: "minecraft:jump",
-  // reproduction: "minecraft:animals_bred",
-  "pêche réussie": "minecraft:fish_caught",
-  // enchantements: "minecraft:enchant_item",
-  // kills: "minecraft:player_kills",
-  // raids: "minecraft:raid_win",
-  // trades: "minecraft:traded_with_villager",
+  sauts: "minecraft:jump",
+  reproduction: "minecraft:animals_bred",
+  peche: "minecraft:fish_caught",
+  enchantements: "minecraft:enchant_item",
+  kills: "minecraft:player_kills",
+  raids: "minecraft:raid_win",
+  trades: "minecraft:traded_with_villager",
   distance: "minecraftDistance",
 };
+const description = Object.keys(statTable).join(", ");
 module.exports = {
-  name: "test",
-  description: "test",
+  name: "stat",
+  description: "fait un classement par statistiques des joueurs",
   options: [
     {
       type: "string",
       name: "stat",
-      description: Object.keys(statTable).join(", "),
+      description:
+        description.length <= 100
+          ? description
+          : description.slice(0, 97) + "...",
       required: true,
     },
   ],
@@ -175,19 +179,25 @@ module.exports = {
                       username: users[key],
                       value: crafted,
                     });
-                } else if (stat === "temps de jeu") {
+                } else if (stat === "time") {
                   statsvalues.values.push({
                     username: users[key],
-                    value:
+                    value: Math.round(
                       jsonData.stats["minecraft:custom"][statTable[stat]] /
-                      20 /
-                      3600,
+                        20 /
+                        3600,
+                      3
+                    ),
+                  });
+                } else if (Object.keys(statTable).includes(stat)) {
+                  statsvalues.values.push({
+                    username: users[key],
+                    value: valueOrZero(
+                      jsonData.stats["minecraft:custom"][statTable[stat]]
+                    ),
                   });
                 } else {
-                  statsvalues.values.push({
-                    username: users[key],
-                    value: jsonData.stats["minecraft:custom"][statTable[stat]],
-                  });
+                  reject("stat not found");
                 }
                 resolve();
               } catch (error) {
@@ -202,12 +212,18 @@ module.exports = {
           await Promise.all(promises);
           // Any code that depends on the completion of the readFile operations
         } catch (error) {
-          console.error("An error occurred during file reading:", error);
+          throw new Error(error);
+          // console.error("An error occurred during file reading:", error);
         }
       };
       fs.readdir(`${WORLD}/stats`, async (err, files) => {
         if (err) {
           console.error("Error reading the directory:", err);
+          interaction.editReply("Dossier Introuvable").then(() => {
+            setTimeout(() => {
+              interaction.deleteReply();
+            }, 2000);
+          });
           return;
         }
 
@@ -217,9 +233,18 @@ module.exports = {
         //   console.log(await getUserbyFile(files));
         const allUsers = await getUserbyFile(files);
 
-        readStatsFiles(allUsers).then(() => {
-          interaction.editReply(statMessage(statsvalues));
-        });
+        readStatsFiles(allUsers)
+          .then(() => {
+            interaction.editReply(statMessage(statsvalues));
+          })
+          .catch((err) => {
+            console.error(err);
+            interaction.editReply("Stat Non trouvée").then(() => {
+              setTimeout(() => {
+                interaction.deleteReply();
+              }, 2000);
+            });
+          });
       });
     });
   },

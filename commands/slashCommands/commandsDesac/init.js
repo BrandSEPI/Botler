@@ -1,4 +1,4 @@
-const playerMessage = require("../../components/playerMessage");
+const playerMessage = require("../../../components/playerMessage");
 
 module.exports = {
   name: "init",

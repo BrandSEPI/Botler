@@ -1,50 +1,6 @@
-const fs = require("fs");
-const WORLD = "./test";
+string =
+  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+const secondString =
+  "Web development is the process of creating and maintaining a website, including design, coding, content creation, and optimization. It includes a wide range of skills and technologies, such as HTML, CSS, JavaScript, server-side scripting, database management, and more.Web developers use a variety of tools and frameworks to create websites that are functional, responsive, and attractive. They typically work with a team of designers, content creators, and other developers to ensure that the website meets the needs of the client and the target audience.There are many types of websites that web developers can create, such as e-commerce sites, social media platforms, news sites, blogs, and more. As the internet continues to evolve and more people rely on it for everyday tasks, the demand for skilled web developers is growing rapidly.Web development is a challenging and rewarding field that requires creativity, problem-solving skills, and the ability to keep up with emerging technologies. Whether you're just starting out or have years of experience, there's always something new to learn in web development.";
 
-fs.readdir(`${WORLD}/stats`, async (err, files) => {
-  if (err) {
-    console.error("Error reading the directory:", err);
-    return;
-  }
-
-  // Check the files in the directory
-  //   console.log(files);
-  const getUserbyFile = async (files) => {
-    const userTable = {};
-
-    const fetchPromises = files.map((file) => {
-      const uuid = file.replace(".json", "");
-      return fetch(`https://playerdb.co/api/player/minecraft/${uuid}`)
-        .then((res) => res.json())
-        .then((json) => {
-          userTable[uuid] = json.data.player.username;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
-
-    await Promise.all(fetchPromises);
-
-    return userTable;
-  };
-  //   console.log(await getUserbyFile(files));
-
-  Object.keys(await getUserbyFile(files)).forEach((key) => {
-    fs.readFile(`${WORLD}/stats/${key}.json`, "utf8", (err, data) => {
-      if (err) {
-        console.error("Error reading the file:", err);
-        return;
-      }
-      try {
-        const jsonData = JSON.parse(data);
-
-        // Do something with the JSON data
-        console.log(jsonData.stats["minecraft:custom"]["minecraft:play_time"]);
-        // console.log("JSON data", jsonData, typeof jsonData);
-      } catch (error) {
-        console.error("Error parsing JSON:", error);
-      }
-    });
-  });
-});
+console.log(secondString.length);
