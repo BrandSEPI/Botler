@@ -3,3 +3,4 @@ node_modules
 test.nnb
 logs/*
 recordings/*
+live_records/*

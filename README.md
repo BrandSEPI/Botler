@@ -15,6 +15,18 @@
 
 [Botler](https://github.com/BrandSEPI/PIWOBOT.git) is an assistant that aims to make your stay on the server perfect .
 
+## Require
+
+```
+FFMPEG command must be available on the system.
+```
+
+```bash
+$ sudo apt update && sudo apt upgrade
+$ sudo apt install ffmpeg
+$ ffmpeg -version
+```
+
 ## Installation
 
 ```bash
