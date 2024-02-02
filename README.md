@@ -13,7 +13,7 @@
 
 ## Description
 
-[Botler](https://github.com/BrandSEPI/PIWOBOT.git) is an assistant that aims to make your stay on the server perfect .
+[Botler](https://github.com/BrandSEPI/PIWOBOT.git) is an assistant that aims to make your experience on the server perfect .
 
 ## Require
 
@@ -63,8 +63,6 @@ loop & shuffle button
 & More ...
 
 ```
-
-If you get problem to running the app DM me
 
 ## Stay in touch
 
